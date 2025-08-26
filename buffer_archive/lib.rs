@@ -12,10 +12,10 @@
 #![feature(strict_provenance)]
 #![feature(core_intrinsics)]
 #![feature(raw_ref_op)]
+#![feature(c_variadic)]
 
 extern crate core;
 extern crate libc;
 pub mod src {
-    pub mod url;
-    pub mod gen_char_category_table;
-}
+pub mod buffer;
+} 

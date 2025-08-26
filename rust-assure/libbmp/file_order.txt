@@ -1,0 +1,16 @@
+main
+__bswap_16
+__bswap_32
+__bswap_64
+__uint16_identity
+__uint32_identity
+__uint64_identity
+bmp_header_init_df
+bmp_header_read
+bmp_header_write
+bmp_img_alloc
+bmp_img_free
+bmp_img_init_df
+bmp_img_read
+bmp_img_write
+bmp_pixel_init

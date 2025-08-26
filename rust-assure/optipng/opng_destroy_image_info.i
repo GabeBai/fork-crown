@@ -1,0 +1,146 @@
+typedef long unsigned int size_t;
+typedef long int __time_t;
+typedef long int __syscall_slong_t;
+struct _IO_FILE;
+struct _IO_FILE;
+struct _IO_FILE;
+struct _IO_marker;
+struct _IO_codecvt;
+struct _IO_wide_data;
+typedef struct
+{
+  unsigned long int __val[(1024 / (8 * sizeof (unsigned long int)))];
+} __sigset_t;
+struct timespec
+{
+  __time_t tv_sec;
+  __syscall_slong_t tv_nsec;
+};
+typedef long int __fd_mask;
+typedef struct
+  {
+    __fd_mask __fds_bits[1024 / (8 * (int) sizeof (__fd_mask))];
+  } fd_set;
+union pthread_attr_t
+{
+  char __size[56];
+  long int __align;
+};
+extern void *memset (void *__s, int __c, size_t __n) __attribute__ ((__nothrow__ )) __attribute__ ((__nonnull__ (1)));
+typedef unsigned int opng_bitset_t;
+enum
+{
+    OPNG_BITSET_ELT_MIN = 0,
+    OPNG_BITSET_ELT_MAX = (int)((sizeof(opng_bitset_t) * 8) - 1)
+};
+ typedef unsigned char png_byte;
+   typedef unsigned short png_uint_16;
+   typedef unsigned int png_uint_32;
+typedef size_t png_size_t;
+typedef png_byte * png_bytep;
+typedef png_uint_16 * png_uint_16p;
+typedef const char * png_const_charp;
+typedef png_byte * * png_bytepp;
+typedef struct png_struct_def png_struct;
+typedef png_struct * png_structp;
+typedef struct png_color_struct
+{
+   png_byte red;
+   png_byte green;
+   png_byte blue;
+} png_color;
+typedef png_color * png_colorp;
+typedef struct png_color_16_struct
+{
+   png_byte index;
+   png_uint_16 red;
+   png_uint_16 green;
+   png_uint_16 blue;
+   png_uint_16 gray;
+} png_color_16;
+typedef png_color_16 * png_color_16p;
+typedef struct png_color_8_struct
+{
+   png_byte red;
+   png_byte green;
+   png_byte blue;
+   png_byte gray;
+   png_byte alpha;
+} png_color_8;
+typedef png_color_8 * png_color_8p;
+typedef struct png_unknown_chunk_t
+{
+    png_byte name[5];
+    png_byte *data;
+    png_size_t size;
+    png_byte location;
+}
+png_unknown_chunk;
+typedef png_unknown_chunk * png_unknown_chunkp;
+struct internal_state;
+typedef long int __jmp_buf[8];
+struct __jmp_buf_tag
+  {
+    __jmp_buf __jmpbuf;
+    int __mask_was_saved;
+    __sigset_t __saved_mask;
+  };
+typedef struct __jmp_buf_tag jmp_buf[1];
+struct exception_context { jmp_buf *penv; int caught; volatile struct { const char * etmp; } v; };
+enum
+{
+    INPUT_IS_PNG_FILE = 0x0001,
+    INPUT_HAS_PNG_DATASTREAM = 0x0002,
+    INPUT_HAS_PNG_SIGNATURE = 0x0004,
+    INPUT_HAS_DIGITAL_SIGNATURE = 0x0008,
+    INPUT_HAS_MULTIPLE_IMAGES = 0x0010,
+    INPUT_HAS_APNG = 0x0020,
+    INPUT_HAS_STRIPPED_DATA = 0x0040,
+    INPUT_HAS_JUNK = 0x0080,
+    INPUT_HAS_ERRORS = 0x0100,
+    OUTPUT_NEEDS_NEW_FILE = 0x1000,
+    OUTPUT_NEEDS_NEW_IDAT = 0x2000,
+    OUTPUT_HAS_ERRORS = 0x4000
+};
+ struct opng_image_struct
+{
+    png_uint_32 width;
+    png_uint_32 height;
+    int bit_depth;
+    int color_type;
+    int compression_type;
+    int filter_type;
+    int interlace_type;
+    png_bytepp row_pointers;
+    png_colorp palette;
+    int num_palette;
+    png_color_16p background_ptr;
+    png_color_16 background;
+    png_uint_16p hist;
+    png_color_8p sig_bit_ptr;
+    png_color_8 sig_bit;
+    png_bytep trans_alpha;
+    int num_trans;
+    png_color_16p trans_color_ptr;
+    png_color_16 trans_color;
+    png_unknown_chunkp unknowns;
+    int num_unknowns;
+} image;
+ void
+opng_destroy_image_info(void)
+{
+    png_uint_32 i;
+    int j;
+    if (image.row_pointers == ((void*)0))
+        return;
+    for (i = 0; i < image.height; ++i)
+        opng_free(image.row_pointers[i]);
+    opng_free(image.row_pointers);
+    opng_free(image.palette);
+    opng_free(image.trans_alpha);
+    opng_free(image.hist);
+    for (j = 0; j < image.num_unknowns; ++j)
+        opng_free(image.unknowns[j].data);
+    opng_free(image.unknowns);
+    memset(&image, 0, sizeof(image));
+}
