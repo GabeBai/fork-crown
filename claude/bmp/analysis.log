@@ -1,0 +1,22 @@
+Function: Tokens -> Full-Fits-Request : Full-Fits-Response: Function-Fits-Request: Function-Fits-Response: Decls-Fit-Request: Decls-Fit-Response 
+bmp_header_init_df: 345 -> True : True: True: True: True: True 
+bmp_pixel_init: 240 -> True : True: True: True: True: True 
+bmp_header_read: 348 -> True : True: True: True: True: True 
+__bswap_32: 41 -> True : True: True: True: True: True 
+bmp_img_init_df: 371 -> True : True: True: True: True: True 
+__uint16_identity: 42 -> True : True: True: True: True: True 
+__bswap_16: 42 -> True : True: True: True: True: True 
+bmp_img_write: 478 -> True : True: True: True: True: True 
+main: 274 -> True : True: True: True: True: True 
+bmp_img_free: 379 -> True : True: True: True: True: True 
+__bswap_64: 42 -> True : True: True: True: True: True 
+bmp_img_read: 512 -> True : True: True: True: True: True 
+__uint64_identity: 42 -> True : True: True: True: True: True 
+__uint32_identity: 41 -> True : True: True: True: True: True 
+bmp_header_write: 349 -> True : True: True: True: True: True 
+bmp_img_alloc: 389 -> True : True: True: True: True: True 
+Summary:
+Total function: 16
+Full function + decls -> 16 fits in request limit, 16 fits in response limit
+Function only -> 16 fits in request limit, 16 fits in response limit
+Decls only -> 16 fits in request limit, 16 fits in response limit

@@ -25,7 +25,7 @@ elif [ $1 = "benchmark" ]; then
 fi
 
 echo "start building crown.."
-cargo build --release
+# cargo build --release
 
 CROWN=$PROJ_DIR/target/release/crown
 

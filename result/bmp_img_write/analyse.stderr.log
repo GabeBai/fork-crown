@@ -1,0 +1,74 @@
+error[E0107]: this type alias takes 1 generic argument but 2 generic arguments were supplied
+  --> buffer/src/buffer.rs:44:61
+   |
+44 | fn bmp_header_write(header: &BmpHeader, file: &mut File) -> Result<(), Error> {
+   |                                                             ^^^^^^     ----- help: remove this generic argument
+   |                                                             |
+   |                                                             expected 1 generic argument
+   |
+note: type alias defined here, with 1 generic parameter: `T`
+  --> /home/gabe/.rustup/toolchains/nightly-2023-01-26-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/io/error.rs:55:10
+   |
+55 | pub type Result<T> = result::Result<T, Error>;
+   |          ^^^^^^ -
+
+error[E0107]: this type alias takes 1 generic argument but 2 generic arguments were supplied
+  --> buffer/src/buffer.rs:55:51
+   |
+55 | fn bmp_img_write(img: &BmpImg, filename: &str) -> Result<(), BmpError> {
+   |                                                   ^^^^^^     -------- help: remove this generic argument
+   |                                                   |
+   |                                                   expected 1 generic argument
+   |
+note: type alias defined here, with 1 generic parameter: `T`
+  --> /home/gabe/.rustup/toolchains/nightly-2023-01-26-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/io/error.rs:55:10
+   |
+55 | pub type Result<T> = result::Result<T, Error>;
+   |          ^^^^^^ -
+
+error[E0308]: mismatched types
+   --> buffer/src/buffer.rs:58:30
+    |
+58  |         Err(_) => return Err(BmpError::FileNotOpened),
+    |                          --- ^^^^^^^^^^^^^^^^^^^^^^^ expected struct `Error`, found enum `BmpError`
+    |                          |
+    |                          arguments to this enum variant are incorrect
+    |
+help: the type constructed contains `src::buffer::BmpError` due to the type of the argument passed
+   --> buffer/src/buffer.rs:58:26
+    |
+58  |         Err(_) => return Err(BmpError::FileNotOpened),
+    |                          ^^^^-----------------------^
+    |                              |
+    |                              this argument influences the type of `Err`
+note: tuple variant defined here
+   --> /home/gabe/.rustup/toolchains/nightly-2023-01-26-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:512:5
+    |
+512 |     Err(#[stable(feature = "rust1", since = "1.0.0")] E),
+    |     ^^^
+
+error[E0308]: mismatched types
+   --> buffer/src/buffer.rs:64:24
+    |
+64  |             return Err(BmpError::HeaderNotInitialized);
+    |                    --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `Error`, found enum `BmpError`
+    |                    |
+    |                    arguments to this enum variant are incorrect
+    |
+help: the type constructed contains `src::buffer::BmpError` due to the type of the argument passed
+   --> buffer/src/buffer.rs:64:20
+    |
+64  |             return Err(BmpError::HeaderNotInitialized);
+    |                    ^^^^------------------------------^
+    |                        |
+    |                        this argument influences the type of `Err`
+note: tuple variant defined here
+   --> /home/gabe/.rustup/toolchains/nightly-2023-01-26-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:512:5
+    |
+512 |     Err(#[stable(feature = "rust1", since = "1.0.0")] E),
+    |     ^^^
+
+error: aborting due to 4 previous errors
+
+Some errors have detailed explanations: E0107, E0308.
+For more information about an error, try `rustc --explain E0107`.

@@ -1,0 +1,32 @@
+Function: Tokens -> Full-Fits-Request : Full-Fits-Response: Function-Fits-Request: Function-Fits-Response: Decls-Fit-Request: Decls-Fit-Response 
+url_free: 240 -> True : True: True: True: True: True 
+url_get_hash: 49 -> True : True: True: True: True: True 
+url_get_path: 248 -> True : True: True: True: True: True 
+decode_percent: 153 -> True : True: True: True: True: True 
+parse_query_string: 246 -> True : True: True: True: True: True 
+url_inspect: 251 -> True : True: True: True: True: True 
+url_get_protocol: 49 -> True : True: True: True: True: True 
+url_get_pathname: 237 -> True : True: True: True: True: True 
+fill: 135 -> True : True: True: True: True: True 
+scan_part: 1556 -> True : True: True: True: True: True 
+unhex: 153 -> True : True: True: True: True: True 
+main: 323 -> True : True: True: True: True: True 
+url_get_fragment: 248 -> True : True: True: True: True: True 
+url_is_ssh: 206 -> True : True: True: True: True: True 
+url_get_userinfo: 249 -> True : True: True: True: True: True 
+strdup: 237 -> True : True: True: True: True: True 
+url_data_inspect: 241 -> True : True: True: True: True: True 
+url_get_scheme: 287 -> True : True: True: True: True: True 
+url_get_host: 237 -> True : True: True: True: True: True 
+url_get_port: 248 -> True : True: True: True: True: True 
+url_parse: 399 -> True : True: True: True: True: True 
+scan_decimal_number: 153 -> True : True: True: True: True: True 
+url_is_protocol: 894 -> True : True: True: True: True: True 
+url_get_query_value: 276 -> True : True: True: True: True: True 
+url_get_hostname: 248 -> True : True: True: True: True: True 
+print_table: 156 -> True : True: True: True: True: True 
+Summary:
+Total function: 26
+Full function + decls -> 26 fits in request limit, 26 fits in response limit
+Function only -> 26 fits in request limit, 26 fits in response limit
+Decls only -> 26 fits in request limit, 26 fits in response limit

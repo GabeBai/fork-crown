@@ -16,6 +16,5 @@
 extern crate core;
 extern crate libc;
 pub mod src {
-    pub mod url;
-    pub mod gen_char_category_table;
+    pub mod buffer;
 }

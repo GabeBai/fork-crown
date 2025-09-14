@@ -87,7 +87,11 @@ def _extract_metrics(data: Optional[Dict[str, Any]]) -> Dict[str, Optional[int]]
     # Expecting shape like:
     # {"num_unsafe_ptrs":0, "num_non_arr_unsafe_ptrs":0, ... "num_unsafe_usages":0, ...}
     if not isinstance(data, dict):
-        return {"num_unsafe_ptrs": None, "num_unsafe_usages": None}
+        return {"num_unsafe_ptrs": None, 
+                "num_unsafe_usages": None, 
+                "num_non_arr_mut_unsafe_usages":None,
+                "num_owning_ptrs_detected":None
+                }
     def _get_int(k: str) -> Optional[int]:
         v = data.get(k, None)
         if isinstance(v, int):
@@ -100,6 +104,8 @@ def _extract_metrics(data: Optional[Dict[str, Any]]) -> Dict[str, Optional[int]]
     return {
         "num_unsafe_ptrs": _get_int("num_unsafe_ptrs"),
         "num_unsafe_usages": _get_int("num_unsafe_usages"),
+        "num_non_arr_mut_unsafe_usages": _get_int("num_non_arr_mut_unsafe_usages"),
+        "num_owning_ptrs_detected": _get_int("num_owning_ptrs_detected")
     }
 
 
@@ -162,7 +168,21 @@ def aggregate_results() -> Dict[str, Any]:
             "result_path": str(stats_path) if stats_path.exists() else None,
             "stderr_has_error": has_error,
         })
-
+        # ---- NEW: 统计四个字段的合计 ----
+    keys = [
+        "num_unsafe_ptrs",
+        "num_unsafe_usages",
+        "num_non_arr_mut_unsafe_usages",
+        "num_owning_ptrs_detected",
+    ]
+    totals = {k: 0 for k in keys}
+    for it in items:
+        m = it["metrics"]
+        for k in keys:
+            v = m.get(k)
+            if isinstance(v, int):
+                totals[k] += v
+            # 忽略 None 或非整型
     # Write JSON summary
     summary_json_path = summary_dir / "summary.json"
     with summary_json_path.open("w", encoding="utf-8") as f:
@@ -173,7 +193,13 @@ def aggregate_results() -> Dict[str, Any]:
     with summary_csv_path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(
             f,
-            fieldnames=["file_stem", "function", "status", "num_unsafe_ptrs", "num_unsafe_usages"]
+            fieldnames=["file_stem", 
+                        "function", 
+                        "status", 
+                        "num_unsafe_ptrs", 
+                        "num_unsafe_usages", 
+                        "num_non_arr_mut_unsafe_usages", 
+                        "num_owning_ptrs_detected"]
         )
         writer.writeheader()
         for it in items:
@@ -183,8 +209,11 @@ def aggregate_results() -> Dict[str, Any]:
                 "status": it["status"],
                 "num_unsafe_ptrs": it["metrics"]["num_unsafe_ptrs"],
                 "num_unsafe_usages": it["metrics"]["num_unsafe_usages"],
+                "num_non_arr_mut_unsafe_usages": it["metrics"]["num_non_arr_mut_unsafe_usages"],
+                "num_owning_ptrs_detected": it["metrics"]["num_owning_ptrs_detected"],
             })
 
+    print("[totals]", ", ".join(f"{k}={totals[k]}" for k in keys))
     print(f"[summary] Wrote {summary_json_path} and {summary_csv_path}")
     return {"json": str(summary_json_path), "csv": str(summary_csv_path), "count": len(items)}
 

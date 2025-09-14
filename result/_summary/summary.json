@@ -1,0 +1,212 @@
+{
+  "results": [
+    {
+      "file_stem": "__bswap_16",
+      "function": "__bswap_16",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__bswap_16/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "__bswap_32",
+      "function": "__bswap_32",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__bswap_32/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "__bswap_64",
+      "function": "__bswap_64",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__bswap_64/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "__uint16_identity",
+      "function": "__uint16_identity",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__uint16_identity/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "__uint32_identity",
+      "function": "__uint32_identity",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__uint32_identity/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "__uint64_identity",
+      "function": "__uint64_identity",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/__uint64_identity/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_header_init_df",
+      "function": "bmp_header_init_df",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 1,
+        "num_owning_ptrs_detected": 14
+      },
+      "result_path": "/home/gabe/crown/result/bmp_header_init_df/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_header_read",
+      "function": "fread",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 2,
+        "num_owning_ptrs_detected": 4
+      },
+      "result_path": "/home/gabe/crown/result/bmp_header_read/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_header_write",
+      "function": "bmp_header_write",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 2,
+        "num_owning_ptrs_detected": 3
+      },
+      "result_path": "/home/gabe/crown/result/bmp_header_write/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_img_alloc",
+      "function": "bmp_img_alloc",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 1,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 2,
+        "num_owning_ptrs_detected": 4
+      },
+      "result_path": "/home/gabe/crown/result/bmp_img_alloc/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_img_free",
+      "function": "bmp_img_free",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/bmp_img_free/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_img_init_df",
+      "function": "init_df",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/bmp_img_init_df/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_img_read",
+      "function": "bmp_img_read",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/bmp_img_read/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "bmp_img_write",
+      "function": "bmp_header_write",
+      "status": "fail",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/bmp_img_write/statistics.json",
+      "stderr_has_error": true
+    },
+    {
+      "file_stem": "bmp_pixel_init",
+      "function": "bmp_pixel_init",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 1,
+        "num_owning_ptrs_detected": 3
+      },
+      "result_path": "/home/gabe/crown/result/bmp_pixel_init/statistics.json",
+      "stderr_has_error": false
+    },
+    {
+      "file_stem": "main",
+      "function": "new",
+      "status": "ok",
+      "metrics": {
+        "num_unsafe_ptrs": 0,
+        "num_unsafe_usages": 0,
+        "num_non_arr_mut_unsafe_usages": 0,
+        "num_owning_ptrs_detected": 0
+      },
+      "result_path": "/home/gabe/crown/result/main/statistics.json",
+      "stderr_has_error": false
+    }
+  ]
+}

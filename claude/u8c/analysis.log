@@ -1,0 +1,25 @@
+Function: Tokens -> Full-Fits-Request : Full-Fits-Response: Function-Fits-Request: Function-Fits-Response: Decls-Fit-Request: Decls-Fit-Response 
+u8next_: 47 -> True : True: True: True: True: True 
+u8encode_: 45 -> True : True: True: True: True: True 
+bsearch: 110 -> True : True: True: True: True: True 
+u8strlen: 42 -> True : True: True: True: True: True 
+u8strncpy: 104 -> True : True: True: True: True: True 
+u8stricmp: 67 -> True : True: True: True: True: True 
+atoll: 115 -> True : True: True: True: True: True 
+getchar: 69 -> True : True: True: True: True: True 
+u8fold: 40 -> True : True: True: True: True: True 
+main: 219 -> True : True: True: True: True: True 
+putchar: 75 -> True : True: True: True: True: True 
+atol: 111 -> True : True: True: True: True: True 
+u8strncat: 79 -> True : True: True: True: True: True 
+u8codepoint: 47 -> True : True: True: True: True: True 
+atof: 106 -> True : True: True: True: True: True 
+atoi: 110 -> True : True: True: True: True: True 
+vprintf: 112 -> True : True: True: True: True: True 
+fold_search: 11268 -> True : False: True: True: True: False 
+u8next_FAST: 47 -> True : True: True: True: True: True 
+Summary:
+Total function: 19
+Full function + decls -> 19 fits in request limit, 18 fits in response limit
+Function only -> 19 fits in request limit, 19 fits in response limit
+Decls only -> 19 fits in request limit, 18 fits in response limit
