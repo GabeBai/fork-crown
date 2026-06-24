@@ -351,9 +351,8 @@ fn place_vars<'tcx>(
             ProjectionElem::Subslice { .. } => unreachable!("unexpected subslicing"),
             ProjectionElem::OpaqueCast(_) => unreachable!("unexpected opaque cast"),
             ProjectionElem::Downcast(..) => {
-                // happens when asserting nonnullness of fn ptrs
-                assert!(place_vars.is_empty());
-                return place_vars;
+                // Keep traversing so variant field projections (e.g. `((_1 as Some).0)`)
+                // can still resolve to the underlying field vars.
             }
         }
     }

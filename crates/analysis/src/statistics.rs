@@ -2,7 +2,7 @@ use common::CrateData;
 use rustc_middle::ty::{TyCtxt, self, Ty};
 use rustc_middle::mir::{
     visit::{PlaceContext, Visitor},
-    Body, Location,
+    Body, Constant, Location, ProjectionElem, TerminatorKind,
 };
 use serde::{Deserialize, Serialize};
 
@@ -22,6 +22,24 @@ pub struct CrateStatistics {
     pub num_mut_unsafe_usages: usize,
     pub num_non_arr_mut_unsafe_usages: usize,
     pub num_owning_ptrs_detected: usize,
+
+    // ============================================================
+    // 新增:Rust 五类 unsafe 操作统计(均基于 optimized_mir,与上面同口径)
+    //   ① 解引用裸指针   -> 复用 num_unsafe_usages(上面已有)
+    //   ② 调用 unsafe 函数/方法
+    //   ③ 访问/修改 static mut
+    //   ④ 实现 unsafe trait(crate 级,非 per-function)
+    //   ⑤ 访问 union 字段
+    // 旧的 crown_statistics.json 缺这些字段也能反序列化(serde default)。
+    // ============================================================
+    #[serde(default)]
+    pub num_unsafe_fn_calls: usize, // ②
+    #[serde(default)]
+    pub num_mut_static_accesses: usize, // ③
+    #[serde(default)]
+    pub num_unsafe_trait_impls: usize, // ④
+    #[serde(default)]
+    pub num_union_field_accesses: usize, // ⑤
 }
 
 impl CrateStatistics {
@@ -31,6 +49,18 @@ impl CrateStatistics {
         let mut statistics = CrateStatistics::default();
 
         let tcx = crate_data.tcx;
+
+        // ④ 实现 unsafe trait —— 这是 item 层(HIR)信息,与 MIR 无关。
+        for maybe_owner in tcx.hir().krate().owners.iter() {
+            let Some(owner) = maybe_owner.as_owner() else { continue };
+            let rustc_hir::OwnerNode::Item(item) = owner.node() else { continue };
+            if let rustc_hir::ItemKind::Impl(impl_) = &item.kind {
+                if impl_.unsafety == rustc_hir::Unsafety::Unsafe {
+                    statistics.num_unsafe_trait_impls += 1;
+                }
+            }
+        }
+
         for &did in &crate_data.fns {
             let body = tcx.optimized_mir(did);
             // gather ptr count
@@ -63,12 +93,10 @@ impl CrateStatistics {
                 if is_pointer_like {
                     statistics.num_non_arr_mut_unsafe_usages += 1; // 建议改名 num_all_pointers
                 }
-                // if is_owning_ptr {
-                //     statistics.num_owning_ptrs += 1;          // 新增：真正拥有型指针（目前只含 Box）
-                // }
+                let _ = is_owning_ptr;
             }
 
-            // gather unsafe usages count
+            // gather unsafe usages count (① 裸指针解引用, ② unsafe 调用, ③ static mut, ⑤ union 字段)
             CountUnsafeUsages {
                 tcx,
                 body: &body,
@@ -97,6 +125,7 @@ impl<'me, 'tcx> Visitor<'tcx> for CountUnsafeUsages<'me, 'tcx> {
         if matches!(context, PlaceContext::NonUse(..)) {
             return;
         }
+        // ① 解引用裸指针(以及 pointer-like 解引用 -> owning 计数)
         if self.body.local_decls[place.local].is_user_variable()
             && place.is_indirect()
         {
@@ -107,7 +136,61 @@ impl<'me, 'tcx> Visitor<'tcx> for CountUnsafeUsages<'me, 'tcx> {
                 self.statistics.num_owning_ptrs_detected += 1;
             }
         }
+        // ⑤ 访问 union 字段:任意 Field 投影,只要其 base 的类型是 union
+        for (base, elem) in place.as_ref().iter_projections() {
+            if let ProjectionElem::Field(..) = elem {
+                if base.ty(self.body, self.tcx).ty.is_union() {
+                    self.statistics.num_union_field_accesses += 1;
+                }
+            }
+        }
     }
+
+    // ② 调用 unsafe 函数/方法(含 extern "C" FFI、intrinsics —— 它们的签名 unsafety 即 Unsafe)
+    fn visit_terminator(
+        &mut self,
+        terminator: &rustc_middle::mir::Terminator<'tcx>,
+        location: Location,
+    ) {
+        if let TerminatorKind::Call { func, .. } = &terminator.kind {
+            let func_ty = func.ty(self.body, self.tcx);
+            let unsafety = match func_ty.kind() {
+                ty::FnDef(..) | ty::FnPtr(..) => {
+                    Some(func_ty.fn_sig(self.tcx).skip_binder().unsafety)
+                }
+                _ => None,
+            };
+            if unsafety == Some(rustc_hir::Unsafety::Unsafe) {
+                self.statistics.num_unsafe_fn_calls += 1;
+            }
+        }
+        self.super_terminator(terminator, location);
+    }
+
+    // ③ 访问/修改 static mut(在 MIR 里表现为指向该 static 的常量指针)
+    fn visit_constant(&mut self, constant: &Constant<'tcx>, location: Location) {
+        if let Some(def_id) = static_def_id(self.tcx, constant) {
+            if self.tcx.static_mutability(def_id) == Some(rustc_hir::Mutability::Mut) {
+                self.statistics.num_mut_static_accesses += 1;
+            }
+        }
+        self.super_constant(constant, location);
+    }
+}
+
+/// 若该 MIR 常量是"指向某个 static 的指针",返回该 static 的 DefId。
+fn static_def_id<'tcx>(
+    tcx: TyCtxt<'tcx>,
+    constant: &Constant<'tcx>,
+) -> Option<rustc_hir::def_id::DefId> {
+    use rustc_middle::mir::interpret::{ConstValue, GlobalAlloc, Scalar};
+    use rustc_middle::mir::ConstantKind;
+    if let ConstantKind::Val(ConstValue::Scalar(Scalar::Ptr(ptr, _)), _) = constant.literal {
+        if let GlobalAlloc::Static(def_id) = tcx.global_alloc(ptr.provenance) {
+            return Some(def_id);
+        }
+    }
+    None
 }
 
 fn is_pointer_like<'tcx>(tcx: TyCtxt<'tcx>, ty: Ty<'tcx>) -> bool {
